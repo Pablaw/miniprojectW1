@@ -15,16 +15,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Dongle:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Do Hyeon', sans-serif;
-            font-family: 'Dongle', sans-serif;
+        :root {
+            --titleFont: 'Do Hyeon', sans-serif;
+            --contentFont: 'Dongle', sans-serif;
+            --contentFontSizeTxt: 28px;
+            --contentFontSizeBtn: 24px;
+            --themeColor1: #212529;
         }
         body{
             display: flex;
             justify-content: center;
             background-color: #f4eded;
         }
-        .frame{
+        .contentFrame{
             width: 420px;
             border: solid 2px black;
             background-color: white;
@@ -34,8 +37,9 @@
             justify-content: center;
         }
         .header{
+            width: 416px;
             display: grid;
-            grid-template-columns: 0.28fr 1fr 0.28fr;
+            grid-template-columns: 0.5fr 1fr 0.5fr;
             grid-template-rows: repeat(2, auto);
             grid-template-areas: 
             "burger none1 logoutBtn"
@@ -52,7 +56,7 @@
         }
         .hamburgerBtn{          
             background-color: white !important;
-            color: #212529;
+            color: var(--themeColor1);
             padding: 0px;
             border-color: white;
             margin-left: 10px;
@@ -66,18 +70,25 @@
             width: 28px;
             height: 5px;
             border-radius: 3px;
-            background-color:#212529;
+            background-color: var(--themeColor1);
             margin: 5px auto;
         }
         .header_title{
             grid-area: title;
             justify-self: center;
             font-size: 28px;
+            font-family: var(--titleFont);
         }
-        .logOutBtn{
+        .logOutDiv{
             grid-area: logoutBtn;
             justify-self: center;
-            font-size: 18px;
+        }
+        .logOutBtn{
+            
+            
+            font-size: 20px;
+            font-family: var(--contentFont);
+            font-weight: 700;
         }
         .content{
             margin-top: 101px;
@@ -88,44 +99,114 @@
             justify-content: center;
         }
         .todo_input{
-            width: 355px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .todo_subject{
-            font-size: 28px;
-            margin-left: 10px;
             display: grid;
             grid-template-columns: 1fr 1fr;
+            width: 355px;
+            justify-self: center;
+            gap: 12px;
+        }
+        .inputTodoBtn{
+            width: 80px;
+            justify-self: right;
+            margin-left: 23px;
+        }
+        .todo_subject{
+            font-size: 35px;
+            display: grid;
+            grid-template-columns: 1fr 30px auto 30px;
+            font-family: var(--contentFont);
+            font-weight: 700;
+            
+        }
+        .dateMoveBtn{
+            padding: 0 7px;
+            cursor: pointer;
         }
         #todoInputText{
-            width: 230px;
+            width: 250px;
             border-radius: 10px;
-            border: solid 1px #212529;
+            border: solid 1px var(--themeColor1);
             text-align: center;
+            font-family: var(--contentFont);
+            font-weight: 700;
+            font-size: var(--contentFontSizeBtn);
+        }
+        #todoInputText:focus-visible{
+            outline: 2px solid var(--themeColor1);
+        }
+        .inputTodoBtn{
+            font-family: var(--contentFont);
+            font-weight: 700;
+            font-size: var(--contentFontSizeBtn);
+            padding: 0px 3px;
         }
         .todo_item{
             display: grid;
-            grid-template-columns: repeat(2, auto);
+            grid-template-columns: 275px 80px;
+            grid-template-rows: 1;
+            margin: 10px 0 10px 10px;
+        }
+        .todoDone{
+            display: grid;
+            grid-template-columns: 275px 80px;
             grid-template-rows: 1;
             margin: 10px 0 10px 10px;
         }
         .todo_listDiv > div {
             margin-bottom: 10px;
         }
-        .interestDiv{
-            display: grid;
-            grid-template-columns: repeat(3, auto);
-            grid-template-rows: 1;
-            border: solid 2px black;
-            width: 40px;
+        .todo_listDiv > button{
+            font-size: var(--contentFontSize);
+        }
+        .todo_item > div {
+            font-family: var(--contentFont);
+            font-size: var(--contentFontSizeTxt);
+        }
+        .todoDone > div {
+            font-family: var(--contentFont);
+            font-size: var(--contentFontSizeTxt);
+            text-decoration: line-through;
+        }
+        .todo_item > button {
+            width: 80px;
+            padding: 0px 3px;
+            justify-self: right;
+            font-family: var(--contentFont);
+            font-size: var(--contentFontSizeBtn);
+        }
+        .todoDone > button {
+            width: 80px;
+            padding: 0px 3px;
+            justify-self: right;
+            font-family: var(--contentFont);
+            font-size: var(--contentFontSizeBtn);
+        }
+        .cardItem{
+            margin-bottom: 15px;
+            display: block;
+            padding-bottom: 10px;
+            border-bottom: solid 1px #212529;
+            border-left: solid 1px #212529;
+            border-right: solid 1px #212529;
+            border-radius: 5px;
+        }
+        .cardItem-title{
+            font-family: var(--contentFont);
+            font-size: var(--contentFontSizeTxt);
+            margin-left: 10px;
+        }
+        .cardItem-body > a {
+            font-family: var(--contentFont);
+            font-size: var(--contentFontSizeTxt);
+            padding: 0 5px 0 5px;
+            margin-left: 10px;
         }
         .offcanvas-top{
-            width: 420px;
-            height: 60px;
-            margin-left: 315px;
+            width: 417px;
+            height: 65px;
+            margin: 0 auto;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+            left: -15px;
         }
         .offcanvas-header{
             width: 420px;
@@ -144,8 +225,9 @@
             width: 420px;
             height: 50px;
             text-align: center;
-            border: solid 2px #212529;
+            border: solid 2px var(--themeColor1);
             top: 94.5vh;
+            background-color: white;
         }
     </style>
     <script>
@@ -154,90 +236,197 @@
             const month = Date().split(" ")[1];
             const date = Date().split(" ")[2]
             $('#today').text(`${year}. ${month}. ${date}.`);
+            todoLoad();
+            loadMovie ();
         });
-        /*
-        function set_temp() {
+
+        function todoLoad() {
+            /*샘플 태그 초기화*/
+             $('.todo_listDiv').empty();
+            /*투두리스트 로딩*/
             $.ajax({
                 type: "GET",
-                url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
+                url: "/main/todo",
                 data: {},
                 success: function (response) {
-                    let temp_seoul = response['temp'];
-                    $('#temp_seoul').text(temp_seoul);
+                    for (item of response) {
+                        let todoItem = item['todo_tesk'];
+                        let todoNum = Number(item['num']);
+                        let todoDone = Number(item['done']);
+
+                        let temp_html = "";
+                        if (todoDone === 0) {
+                            temp_html = `<div id=${todoNum} class="todo_item">
+                                            <div>${todoItem}</div>
+                                            <button type="button" id=${todoNum} class="btn btn-outline-dark" onClick="doneTodo(${todoNum})">완료</button>
+                                        </div>`;
+                        } else if (todoDone === 1) {
+                            temp_html = `<div id=${todoNum} class="todoDone">
+                                            <div>${todoItem}</div>
+                                            <button type="button" id=${todoNum} class="btn btn-dark" onClick="doneTodo(${todoNum})">취소</button>
+                                        </div>`;
+                        }
+                        $('.todo_listDiv').append(temp_html);
+                    }
                 }
             });
         }
-        */
-        /*포스트 sample
-        $.ajax({
-                type: 'POST',
-                url: '/homework',
-                data: {name_give: name, comment_give: comment},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
+            
+        $(function(){
+            $('.inputTodoBtn').click(function(){
+                const year = Date().split(" ")[3].substring(2, 4);
+                const month = Date().split(" ")[1];
+                const date = Date().split(" ")[2]
+                const today = `${year}-${month}-${date}`;
+
+
+                let text = $('#todoInputText').val();
+                if(text === ""){
+                    alert('할 일을 입력해주세요!');
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/main/todo',
+                        data: {todo_tesk: text, today: today},
+                        success: function (response) {
+                            alert(response['msg'])
+                            location.reload()
+                        }
+                    });
                 }
-            });*/
+            })
+        })
+
+        function loadMovie () {
+            /*추천 영상 로딩*/
+            $.ajax({
+                type: "GET",
+                url: "/main/movie",
+                data: {},
+                success: function (response) {
+                    for (item of response) {
+                        /*키워드 가입 정보*/
+                        /*
+                        let todoItem = item['todo_tesk'];
+                        let todoNum = Number(item['num']);
+                        let todoDone = Number(item['done']);
+                        */
+                        const userInterest = 'interest';
+                        let temp_html = `<div class="interest_subject1">
+                                            <div class="cardItem" style="width: 357px;">
+                                                <iframe width="355" height="215" src="https://www.youtube.com/embed/${userInterest}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                <div class="cardItem-body">
+                                                <h5 class="cardItem-title">추천 영상1</h5>
+                                                <a href="#" class="btn btn-outline-dark">크게 보러가기</a>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                        }
+                        $('.recommandMovies').append(temp_html);
+                    }
+                });
+        }
+        function doneTodo (num){
+            $.ajax({
+                        type: 'POST',
+                        url: '/main/tododone',
+                        data: {give_itemNum: num},
+                        success: function (response) {
+                            console.log(response['msg']);
+                            window.location.reload()
+                        }
+                    });
+        }
     </script>
 </head>
 <body style="height: unset; overflow-x: auto; overflow-y: scroll;">
-    <div class="frame">
-        <div class="header">
-            <!-- offcanvas btn -->
-        <div class="hamburgerDiv">
-            <button id="hamBtn" class="hamburgerBtn btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                <div class="ham_bar"></div>
-                <div class="ham_bar"></div>
-                <div class="ham_bar"></div>
-            </button>
-        </div>
-        <!-- offcanvas contents-->
-        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-            <div class="offcanvas-header">
-                <div style="border: solid 1px black; padding: 10px 5px 0 5px; border-radius: 10px;" class="homeBtn" onclick="location.href='/home'">🏠 HOME</div>
-                <div style="border: solid 1px black; padding: 10px 5px 0 5px; border-radius: 10px; " class="todoBtn" onclick="location.href='/main'">📋 TODO</div>
-                <div style="border: solid 1px black; padding: 10px 5px 0 5px; border-radius: 10px;" class="mypageBtn" onclick="location.href='/mypage'">🙋‍♂️ MY</div>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-        </div>
-
-            <div class="header_title">생생정보 5(⭐️⭐️⭐️⭐️⭐️)Todo</div>
-            <div class="logOutBtn">
-                <button type="button" class="logOutBtn btn btn-dark">로그아웃</button>
-            </div>
-        </div>
-        <div class="content">
-            <div class="todoDiv"></div>
-                <div class="todo_subject">ToDo List<span id="today"style="text-align: right;">00시 00분</span></div>
-                <div class="todo_input">
-                    <input id="todoInputText" type="text" placeholder="할 일을 입력해주세요 :)">
-                    <button type="button" class="btn btn-outline-dark">추가</button>
-                </div>
-                <div class="todo_listDiv">
-                        <div class="todo_item">
-                            <div>테스트1</div> 
-                            <button type="button" class="btn btn-outline-dark">완료</button>
-                        </div>
-                        <div class="todo_item">
-                            <div>테스트2</div> 
-                            <button type="button" class="btn btn-outline-dark">완료</button>
-                        </div>
-                        <div class="todo_item">
-                            <div>테스트3</div> 
-                            <button type="button" class="btn btn-outline-dark">완료</button>
-                        </div>
-                </div>
-                
-            <div class="interestDiv">
-                <div class="interest_subject"></div>
-                <div class="interest_content">
-                    <div class="interest_tumbnail">썸네일 이미지</div>
-                    <div class="interest_text">영상 제목 내용</div>
+        <div class="contentFrame">
+            <div class="header">
+                <!-- offcanvas btn -->
+            <!-- <div class="hamburgerDiv">
+                <button id="hamBtn" class="hamburgerBtn btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                    <div class="ham_bar"></div>
+                    <div class="ham_bar"></div>
+                    <div class="ham_bar"></div>
+                </button>
+            </div> -->
+            <!-- offcanvas contents-->
+            <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+                <div class="offcanvas-header">
+                    <div style="border: solid 1px black; padding: 10px 5px 0 5px; border-radius: 10px;" class="homeBtn" onclick="location.href='/home'">🏠 HOME</div>
+                    <div style="border: solid 1px black; padding: 10px 5px 0 5px; border-radius: 10px; " class="todoBtn" onclick="location.href='/main'">📋 TODO</div>
+                    <div style="border: solid 1px black; padding: 10px 5px 0 5px; border-radius: 10px;" class="mypageBtn" onclick="location.href='/mypage'">🙋‍♂️ MY</div>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
             </div>
-        </div>
-        <div class="footer">Copyright.A5</div>
-    </div>
     
+                <div class="header_title">오늘 Do? 내일 Do!</div>
+                <div class="logOutDiv">
+                    <button type="button" class="logOutBtn btn btn-dark">로그아웃</button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="todoDiv"></div>
+                    <div class="todo_subject">ToDo List<span class="dateMoveBtn" onclick="console.log('어제')"><</span><span id="today"style="text-align: right; cursor:pointer" onclick="console.log('달력표시 예정')">00년00월00일</span><span class="dateMoveBtn" onclick="console.log('내일')">></span></div>
+                    <div class="todo_input">
+                        <input id="todoInputText" type="text" placeholder="할 일을 입력해주세요 :)" maxlength="20">
+                        <button type="button" class="inputTodoBtn btn btn btn-dark">추가</button>
+                    </div>
+                    <div class="todo_listDiv">
+                            <div class="todoDone todo_item">
+                                <div>저녁 김치찌개 만들기 !</div> 
+                                <button type="button" id="num" class="btn btn-outline-dark">취소</button>
+                            </div>
+                            <div class="todo_item">
+                                <div>아침 도시락 미리 싸놓기</div> 
+                                <button type="button" id="num" class="doneBtn btn btn-outline-dark">완료</button>
+                            </div>
+                            <div class="todo_item">
+                                <div>매일 일기 쓰기</div> 
+                                <button type="button" class="btn btn-outline-dark">완료</button>
+                            </div>
+                            <div class="todo_item">
+                                <div>매일 일기 쓰기</div> 
+                                <button type="button" class="btn btn-outline-dark">완료</button>
+                            </div>
+                            <div class="todo_item">
+                                <div>20자 이내로 작성</div> 
+                                <button type="button" class="btn btn-outline-dark">완료</button>
+                            </div>
+                    </div>
+                    
+                <div class="recommandMovies">
+                    <div class="recommandTitle">🎥 관심 키워드 영상</div>
+                    <div class="interest_subject1">
+                        <div class="cardItem" style="width: 357px;">
+                            <iframe width="355" height="215" src="https://www.youtube.com/embed/I82pbW2y_cc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <div class="cardItem-body">
+                              <h5 class="cardItem-title">추천 영상1</h5>
+                              <a href="#" class="btn btn-outline-dark">크게 보러가기</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interest_subject2">
+                        <div class="cardItem" style="width: 357px;">
+                            <iframe width="355" height="215" src="https://www.youtube.com/embed/I82pbW2y_cc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <div class="cardItem-body">
+                              <h5 class="cardItem-title">추천 영상2</h5>
+                              <a href="#" class="btn btn-outline-dark">크게 보러가기</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interest_subject3">
+                        <div class="cardItem" style="width: 357px;">
+                            <iframe width="355" height="215" src="https://www.youtube.com/embed/I82pbW2y_cc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <div class="cardItem-body">
+                              <h5 class="cardItem-title">추천 영상3</h5>
+                              <a href="#" class="btn btn-outline-dark">크게 보러가기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">Copyright.A5</div>
+        </div>
 </body>
 </html>
