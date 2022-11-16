@@ -22,8 +22,11 @@ def web_crawling_youtube():
     #### 2. 동적페이지 크롤링 ####
     # 옵션 생성
     options = webdriver.ChromeOptions()
-    # 창 숨기는 옵션 추가(백그라운드로 실행, 이걸 하지 않으면 브라우저 열어서 탐색하게 됨)
-    options.add_argument("headless")
+
+    options.add_argument("headless") # 창 숨기는 옵션 추가(백그라운드로 실행, 이걸 하지 않으면 브라우저 열어서 탐색하게 됨)
+    options.add_argument("--disable-popup-blocking") #광고팝업안띄움
+    options.add_argument("--blink-settings=imagesEnabled=false") #이미지 다운 안받음
+    options.add_argument("--disable-gpu");  #gpu 비활성화(GUI 없는 OS를 위해..)
 
     # driver 실행
     driver = webdriver.Chrome(options=options)
@@ -45,8 +48,11 @@ def web_crawling_youtube():
             crawling_link = soup.select_one('#contents > ytd-video-renderer:nth-child('+str(j)+') > #dismissible > ytd-thumbnail > #thumbnail')['href'].strip()
             crawling_link = crawling_link.replace('/watch?v=', '') #링크 식별값만 추출
             youtube_links.append({i:crawling_link}) #append : 배열 뒤로 추가
+    print(youtube_links)
+    return None
+    #return jsonify({'ytb_links':youtube_links})
 
-    return jsonify({'ytb_links':youtube_links})
+web_crawling_youtube()
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
