@@ -32,8 +32,7 @@ db = client.dbminiW1
 SECRET_KEY = 'SPARTA'
 
 
-
-# 사이트 시작화면 
+# 사이트 시작화면
 @app.route('/')
 def firstpage():
     return render_template('firstpage.html')
@@ -87,6 +86,7 @@ def check_mail():
 # 회원 정보 저장
 @app.route('/api/signup', methods=['POST'])
 def join():
+    interest_receive = request.form['interest_give']
     id_receive = request.form['id_give']
     name_receive = request.form['name_give']
     mail_receive = request.form['mail_give']
@@ -94,19 +94,23 @@ def join():
 
     # 패스워드 단방향 암호화
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-    
-    db.user.insert_one({'id': id_receive, 'user_name': name_receive, 'mail': mail_receive, 'pw': pw_hash})
+
+    db.user.insert_one({'id': id_receive, 'user_name': name_receive, 'interest': interest_receive, 'mail': mail_receive,
+                        'pw': pw_hash})
+
     return jsonify({'result': 'success'})
 
 
 @app.route("/main/")
 def main_home():
     return render_template('main.html')
-    
+
+
 @app.route('/login')
 def login():
     msg = request.args.get('msg')
     return render_template('login.html', msg=msg)
+
 
 @app.route('/login')
 def signup_in_login():
@@ -121,7 +125,7 @@ def signup_in_login():
         return redirect(url_for("firstpage", msg="로그인 정보가 존재하지 않습니다."))
 
 
-#형준님 회원가입 페이지 로 봐야하는부분입니다
+# 형준님 회원가입 페이지 로 봐야하는부분입니다
 @app.route('/api/signup', methods=['POST'])
 def api_register():
     id_receive = request.form['id_give']
@@ -135,13 +139,13 @@ def api_register():
     return jsonify({'result': 'success'})
 
 
-#아이디 비밀번호를 받아오며
+# 아이디 비밀번호를 받아오며
 @app.route('/api/login', methods=['POST'])
 def api_login():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
 
-    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest() #비밀번호를 암호화
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()  # 비밀번호를 암호화
 
     result = db.user.find_one({'id': id_receive, 'pw': pw_hash})
 
@@ -149,10 +153,9 @@ def api_login():
 
         payload = {
             'id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5) #로그인이 얼만큼 유지가 되는가
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)  # 로그인이 얼만큼 유지가 되는가
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-
 
         return jsonify({'result': 'success', 'token': token})
 
@@ -160,7 +163,8 @@ def api_login():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-#db에서 비밀번호를 디코딩해서 저장되있는 id값 및 닉네임 값을 가져옴
+
+# db에서 비밀번호를 디코딩해서 저장되있는 id값 및 닉네임 값을 가져옴
 @app.route('/api/nick', methods=['GET'])
 def api_valid():
     token_receive = request.cookies.get('mytoken')
@@ -176,16 +180,16 @@ def api_valid():
     except jwt.exceptions.DecodeError:
         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
+
 @app.route("/main/todo", methods=["POST"])
 def todo_post():
     todo_tesk = request.form['todo_tesk']
     today = request.form['today']
 
-    num = len(list(db.todo.find({},{'_id':False}))) + 1
+    num = len(list(db.todo.find({}, {'_id': False}))) + 1
     done = 0
     doc = {'today': today, 'todo_tesk': todo_tesk, 'num': num, 'done': done}
     db.todo.insert_one(doc)
-
 
 
 @app.route("/main/todo", methods=["GET"])
@@ -193,21 +197,21 @@ def sample_get():
     todoList = list(db.todo.find({}, {'_id': False}))
     return jsonify(todoList)
 
+
 @app.route("/main/tododone", methods=["POST"])
 def done_post():
     item_num = int(request.form['give_itemNum'])
-    doneNum = db.todo.find_one({'num':item_num})['done']
-    
+    doneNum = db.todo.find_one({'num': item_num})['done']
+
     if doneNum == 1:
-        db.todo.update_one({'num':item_num},{'$set':{'done':0}})
+        db.todo.update_one({'num': item_num}, {'$set': {'done': 0}})
     elif doneNum == 0:
-        db.todo.update_one({'num':item_num},{'$set':{'done':1}})
-        
+        db.todo.update_one({'num': item_num}, {'$set': {'done': 1}})
 
     return jsonify({'msg': 'Todo 갱신'});
 
 
-#유튜브 키워드 크롤링
+# 유튜브 키워드 크롤링
 @app.route('/crawling', methods=["POST"])
 def web_crawling_youtube():
     #### 1. 사용자 키워드 및 크롤링 대상 url 세팅 ####
@@ -224,7 +228,7 @@ def web_crawling_youtube():
     driver = webdriver.Chrome(options=options)
     driver.get(target_url)
 
-    #html 가져오기
+    # html 가져오기
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
     # driver 종료
@@ -235,14 +239,16 @@ def web_crawling_youtube():
     if soup != None:
         i = 0
         j = 0
-        for i in  range(0, 3, 1):
+        for i in range(0, 3, 1):
             j += 1
-            crawling_link = soup.select_one('#contents > ytd-video-renderer:nth-child('+str(j)+') > #dismissible > ytd-thumbnail > #thumbnail')['href'].strip()
-            crawling_link = crawling_link.replace('/watch?v=', '') #링크 식별값만 추출
-            youtube_links.append({i:crawling_link}) #append : 배열 뒤로 추가
+            crawling_link = soup.select_one(
+                '#contents > ytd-video-renderer:nth-child(' + str(j) + ') > #dismissible > ytd-thumbnail > #thumbnail')[
+                'href'].strip()
+            crawling_link = crawling_link.replace('/watch?v=', '')  # 링크 식별값만 추출
+            youtube_links.append({i: crawling_link})  # append : 배열 뒤로 추가
 
-    return jsonify({'ytb_links':youtube_links})
+    return jsonify({'ytb_links': youtube_links})
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=1500, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)

@@ -5,8 +5,8 @@
 .mypost {
     width: 95%;
     max-width: 500px;
-    height: 750px;
-    margin: 80px auto 0 auto;
+    height: 800px;
+    margin: 60px auto 0 auto;
     padding: 20px 20px 70px 20px;
     box-shadow: 0 0 3px 0 gray;
     border-radius: 20px;
@@ -26,6 +26,14 @@
     font-size: 20px;
 }
 
+.category {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+
 .login-check {
     margin-top: 50px;
     display: flex;
@@ -41,6 +49,11 @@
 #floatingUsername, #floatingId {
     width: 60%;
     margin-right: 19px;
+}
+
+#floatingInterest {
+    width: 18%;
+    background-color: #ffffff;
 }
 
 #floatingMail {
@@ -63,4 +76,14 @@
 
 .btn-secondary {
     font-size: 20px;
+}
+
+input[type='radio'] {
+    margin-left: 20px;
+}
+
+label {
+    margin: 0 5px;
+    position: relative;
+    top: 10px;
 }
