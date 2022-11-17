@@ -20,14 +20,15 @@ import datetime
 # html 예쁘게 긁어오기 bs4
 from bs4 import BeautifulSoup
 
-# 동적페에지 크롤링 selenium
+# 동적페이지 크롤링 selenium
 from selenium import webdriver
 
-load_dotenv()
-DB = os.getenv('DB')
-client = MongoClient(DB, tlsCAFile=certifi.where())
+# load_dotenv()
+# DB = os.getenv('DB')
+# client = MongoClient(DB, tlsCAFile=certifi.where())
 
-db = client.dbminiW1
+client = MongoClient('mongodb+srv://test:sparta@cluster0.mapsk1p.mongodb.net/Cluster0?retryWrites=true&w=majority')
+db = client.test
 
 SECRET_KEY = 'SPARTA'
 
@@ -42,6 +43,19 @@ def firstpage():
 @app.route('/signup')
 def sign_up():
     return render_template('signup.html')
+
+
+# 비밀번호 찾기를 위한 회원 검증 과정
+@app.route('/checkinfo')
+def check_info():
+    return render_template('checkinfo.html')
+
+
+# 비밀번호 찾기를 위한 회원 검증이 끝나면 비밀번호 변경 페이지로 이동
+@app.route('/updatepw/<user_id>')
+def update_pw(user_id):
+    id_receive = request.form.get('user_id')
+    return render_template('updatepw.html', id=user_id)
 
 
 # 아이디 중복검사
@@ -101,6 +115,31 @@ def join():
     return jsonify({'result': 'success'})
 
 
+# 아이디와 메일을 체크해 가입된 회원정보가 있는지 확인한다.
+@app.route('/api/checkinfo', methods=['POST'])
+def check_user():
+    id_receive = request.form['id_give']
+    mail_receive = request.form['mail_give']
+    user = db.user.find_one({'id': id_receive, 'mail': mail_receive}, {'_id': False})
+    if user is not None:
+        return jsonify({'result': 'success'})
+    else:
+        return jsonify({'result': 'false'})
+
+
+# 체크한 아이디의 패스워드를 변경
+@app.route('/api/updatepw', methods=['PATCH'])
+def update_user_pw():
+    id_receive = request.form['id_give']
+    pw_receive = request.form['pw_give']
+
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+
+    db.user.update_one({'id': id_receive}, {'$set': {'pw': pw_hash}})
+
+    return jsonify({'result': 'success'})
+
+
 @app.route("/main/")
 def main_home():
     return render_template('main.html')
@@ -108,8 +147,7 @@ def main_home():
 
 @app.route('/login')
 def login():
-    msg = request.args.get('msg')
-    return render_template('login.html', msg=msg)
+    return render_template('login.html')
 
 
 @app.route('/login')
@@ -158,7 +196,6 @@ def api_login():
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token})
-
 
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})

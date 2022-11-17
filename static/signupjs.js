@@ -51,7 +51,7 @@ function join() {
                 if (response['result'] === 'success') {
                     alert('회원가입이 완료되었습니다.')
                     // 로그인 페이지 경로 지정해주기.
-                    window.location.href = '/#'
+                    window.location.href = '/login'
                 }
             }
         })

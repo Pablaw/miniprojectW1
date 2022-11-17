@@ -98,13 +98,14 @@
             data: {id_give: $('#userid').val(), pw_give: $('#userpw').val()},
             success: function (response) {
                 console.log(response['token'])
-                if (response['result'] == 'success') {
+                if (response['result'] === 'success') {
 
                     $.cookie('mytoken', response['token']);
 
 
                     alert('로그인 완료!')
-                    window.location.href = '/mainpage'
+                    //window.location.href = '/mainpage'
+                    window.location.href = '/main'
                 } else {
                     alert(response['msg'])
                 }

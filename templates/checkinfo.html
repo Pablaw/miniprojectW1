@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Myeongjo:wght@400;700;800&display=swap"
+          rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+
+    <title>비밀번호 찾기</title>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+
+* {
+    font-family: 'Do Hyeon', sans-serif;
+}
+
+    .mypost {
+    width: 95%;
+    max-width: 450px;
+    height: 450px;
+    margin: 150px auto auto auto;
+    padding: 20px;
+    box-shadow: 0 0 3px 0 gray;
+    border-radius: 20px;
+}
+
+.title {
+    font-size: 20px;
+    color: burlywood;
+    margin: 40px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sub-title {
+    font-size: 30px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .login01 {
+        font-size: 20px;
+    }
+
+
+    .login-check {
+        margin-top: 50px;
+    }
+
+</style>
+<script>
+
+    function check_info() {
+        let user_id = $('#floatingId').val();
+        let user_mail = $('#floatingMail').val();
+        if (user_id === '' || user_mail === '') {
+            alert('아이디와 이메일을 입력하세요.')
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/api/checkinfo",
+                data: {
+                    id_give: user_id,
+                    mail_give: user_mail
+                },
+                success: function (response) {
+                    if (response['result'] === 'success') {
+
+                        window.location.href = '/updatepw/' + user_id
+                    } else {
+                        alert('회원정보가 존재하지 않습니다.')
+                    }
+                }
+            })
+        }
+    }
+
+</script>
+<body>
+
+<div class="mypost">
+    <h1 class="title" type="button" onclick="location.href='/'">오늘DO? 내일DO!</h1>
+    <h2 class="sub-title">비밀번호를 잊으셨나요?</h2>
+    <div class="login01">
+        <div class="sign">
+            <div class="form-floating mb-3 check-area-1">
+                <input type="text" class="form-control" id="floatingId" placeholder="placeholder">
+                <label for="floatingId">아이디</label>
+            </div>
+            <div class="form-floating mb-5 check-area-2">
+                <input type="email" class="form-control" id="floatingMail" placeholder="placeholder">
+                <label for="floatingMail">이메일</label>
+            </div>
+        </div>
+        <div class="login-check">
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-dark btn-lg" onclick="check_info()">비밀번호 변경</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>
