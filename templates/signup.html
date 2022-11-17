@@ -25,6 +25,7 @@
 
 <div class="mypost">
     <h1 class="title">오늘 Do? 내일 Do!</h1>
+    <h2 class="sub-title">회원가입</h2>
     <div class="login01">
         <div class="sign">
             <div class="form-floating mb-3 check-area-1">
@@ -38,6 +39,20 @@
                        onchange="change_username()">
                 <label for="floatingUsername">닉네임</label>
                 <button type="button" class="btn btn-secondary" onclick="check_username()">중복확인</button>
+            </div>
+            <div class="form-floating mb-3 check-area-1">
+                <input type="text" class="form-control" id="floatingInterest" placeholder="placeholder" disabled>
+                <label for="floatingInterest">관심사</label>
+                <input type="radio" id="category-1" name="category" value="운동">
+                <p><label for="category-1"> 운동 </label></p>
+                <input type="radio" id="category-2" name="category" value="노래">
+                <p><label for="category-2"> 노래 </label></p>
+                <input type="radio" id="category-3" name="category" value="요리">
+                <p><label for="category-3"> 요리 </label></p>
+                <input type="radio" id="category-4" name="category" value="게임">
+                <p><label for="category-4"> 게임 </label></p>
+                <input type="radio" id="category-5" name="category" value="코딩">
+                <p><label for="category-5"> 코딩 </label></p>
             </div>
             <div class="form-floating mb-5 check-area-2">
                 <input type="email" class="form-control" id="floatingMail" placeholder="placeholder"

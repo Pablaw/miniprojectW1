@@ -17,7 +17,6 @@ function change_mail() {
     c_mail = 0
 }
 
-
 // 회원가입 버튼 클릭 -> DB에 회원정보 저장
 function join() {
     if (c_id === 0) {
@@ -26,6 +25,9 @@ function join() {
     } else if (c_name === 0) {
         alert("닉네임을 확인 해주세요.")
         document.getElementById("floatingUsername").focus()
+    } else if (!$('input:radio[name=category]').is(':checked')) {
+        alert("관심사를 선택 해주세요.")
+        document.getElementById("category-1").checked
     } else if (c_mail === 0) {
         alert("이메일을 확인 해주세요.")
         document.getElementById("floatingMail").focus()
@@ -39,6 +41,7 @@ function join() {
             type: "POST",
             url: "/api/signup",
             data: {
+                interest_give: $('input[name=category]:checked').val(),
                 id_give: $('#floatingId').val(),
                 name_give: $('#floatingUsername').val(),
                 mail_give: $('#floatingMail').val(),
@@ -48,7 +51,7 @@ function join() {
                 if (response['result'] === 'success') {
                     alert('회원가입이 완료되었습니다.')
                     // 로그인 페이지 경로 지정해주기.
-                    window.location.href = '/#'
+                    window.location.href = '/login'
                 }
             }
         })

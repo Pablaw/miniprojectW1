@@ -172,6 +172,11 @@
         .todoDone > div {
             font-family: var(--contentFont);
             font-size: var(--contentFontSizeTxt);
+        }
+        .done{
+            text-decoration: none;
+        }
+        .cancle{
             text-decoration: line-through;
         }
         .todo_item > button {
@@ -267,9 +272,8 @@
                 success: function (response) {
                     console.log(response)
                     // 추가된 부분 웰컴 인사
-                    const welcomeTxt = `Hello, ${response['nickname']}!`;
+                    const welcomeTxt = `Hello, {{nickname}}`;
                     $('.greeting').append(welcomeTxt);
-
 
                     for (item of response['todoList']) {
                         console.log(item)
@@ -279,14 +283,14 @@
 
                         let temp_html = "";
                         if (todoDone === 0) {
-                            temp_html = `<div id=${todoNum} class="todo_item">
-                                            <div>${todoItem}</div>
-                                            <button type="button" id=${todoNum} class="btn btn-outline-dark" onClick="doneTodo(${todoNum})">완료</button>
+                            temp_html = `<div id=container${todoNum} class="todo_item cancle">
+                                            <div>${todoItem} </div>
+                                            <button  type="button" id=btn${todoNum} class="btn btn-outline-dark" onClick="doneTodo(${todoNum})">취소</button>
                                         </div>`;
                         } else if (todoDone === 1) {
-                            temp_html = `<div id=${todoNum} class="todoDone">
-                                            <div>${todoItem}</div>
-                                            <button type="button" id=${todoNum} class="btn btn-dark" onClick="doneTodo(${todoNum})">취소</button>
+                            temp_html = `<div id=container${todoNum} class="todoDone done">
+                                            <div>${todoItem} </div>
+                                            <button type="button" id=btn${todoNum} class="btn btn-outline-dark" onClick="doneTodo(${todoNum})">완료</button>
                                         </div>`;
                         }
                         $('.todo_listDiv').append(temp_html);
@@ -377,14 +381,35 @@
         */
 
 
-        function doneTodo (num, done){
+ function doneTodo (num){
+
+            console.log(document.getElementById(`${num}`));
+            const targetDiv = document.getElementById(`container${num}`);
+            const targetBtn = document.getElementById(`btn${num}`);
+
+            console.log(targetDiv);
+
             $.ajax({
                         type: 'POST',
                         url: '/main/tododone',
-                        data: {give_itemNum: num, give_itemDone:done},  //data: {id_give:'pablaw1234', give_itemNum: num, give_itemDone:done},
+                        data: {give_itemNum: num},
                         success: function (response) {
-                            console.log(response['msg']);
-                            window.location.reload()
+                            console.log(response['doneNum']);
+                            // location.reload();
+                            if(response['doneNum'] == 1) {
+                                targetBtn.innerHTML = "취소"
+                                console.log(targetBtn);
+                                targetDiv.classList.remove("done")
+                                targetDiv.classList.add("cancle");
+
+
+                            } else if (response['doneNum'] == 0) {
+                                targetBtn.innerHTML = "완료"
+                                targetDiv.classList.remove("cancle")
+                                targetDiv.classList.add("done");
+
+                                console.log(targetDiv);
+                            }
                         }
                     });
         }
@@ -426,7 +451,7 @@
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
             </div>
-                <div class="greeting">{{nickname}}</div>
+                <div class="greeting"></div>
                 <div class="header_title">오늘 Do? 내일 Do!</div>
                 <div class="logOutDiv">
                     <button type="button" class="logOutBtn btn btn-dark" onclick="signOut()">로그아웃</button>
