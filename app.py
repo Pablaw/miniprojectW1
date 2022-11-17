@@ -286,18 +286,17 @@ def web_crawling_youtube():
         driver.quit()
 
         #### 3. 링크주소 추출 및 json 배열화 ####
+        #select_one 초반 부분에 #contents > 가 있었는데 이게 #item 등으로 변경되어 크롤링이 안되어 삭제
         youtube_links = []
         if soup != None:
             i = 0
             j = 0
             for i in range(0, 3, 1):
                 j += 1
-                crawling_link = soup.select_one('#contents > ytd-video-renderer:nth-child(' + str(
-                    j) + ') > #dismissible > ytd-thumbnail > #thumbnail')['href'].strip()
+                crawling_link = soup.select_one('ytd-video-renderer:nth-child(' + str(j) + ') > #dismissible > ytd-thumbnail > #thumbnail')['href'].strip()
                 crawling_link = crawling_link.replace('/watch?v=', '')  # 링크 식별값만 추출
                 youtube_links.append({i: crawling_link})  # append : 배열 뒤로 추가
-
-        print(youtube_links)
+        #print(youtube_links)
 
         return jsonify({'ytb_links': youtube_links})
 
