@@ -28,7 +28,7 @@ from selenium import webdriver
 # client = MongoClient(DB, tlsCAFile=certifi.where())
 # db = client.dbminiW1
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.mapsk1p.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('몽고DB URL 입력이 필요합니다.')
 db = client.test
 
 SECRET_KEY = 'SPARTA'
